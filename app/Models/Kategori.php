@@ -12,4 +12,9 @@ class Kategori extends Model
     ];
 
     protected $primaryKey = 'id_kategori';
+
+    public function barangs()
+    {
+        return $this->hasMany(Barang::class, 'id_kategori', 'id_kategori');
+    }
 }

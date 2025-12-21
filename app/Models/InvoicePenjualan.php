@@ -14,4 +14,9 @@ class InvoicePenjualan extends Model
     ];
 
     protected $primaryKey = 'id_invoicepenjualan';
+
+    public function barangKeluar()
+    {
+        return $this->belongsTo(BarangKeluar::class, 'id_barangkeluar', 'id_barangkeluar');
+    }
 }

@@ -16,4 +16,19 @@ class BarangKeluar extends Model
     ];
 
     protected $primaryKey = 'id_barangkeluar';
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'id_customer', 'id_customer');
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'id_barang', 'id_barang');
+    }
+
+    public function invoicePenjualan()
+    {
+        return $this->hasOne(InvoicePenjualan::class, 'id_barangkeluar', 'id_barangkeluar');
+    }
 }

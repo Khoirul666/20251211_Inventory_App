@@ -14,4 +14,9 @@ class InvoicePembelian extends Model
     ];
 
     protected $primaryKey = 'id_invoicepembelian';
+
+    public function barangMasuk()
+    {
+        return $this->belongsTo(BarangMasuk::class, 'id_barangmasuk', 'id_barangmasuk');
+    }
 }

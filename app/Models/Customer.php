@@ -15,4 +15,9 @@ class Customer extends Model
     ];
 
     protected $primaryKey = 'id_customer';
+
+    public function barangKeluars()
+    {
+        return $this->hasMany(BarangKeluar::class, 'id_customer', 'id_customer');
+    }
 }

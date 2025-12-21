@@ -15,4 +15,9 @@ class Supplier extends Model
     ];
 
     protected $primaryKey = 'id_supplier';
+
+    public function barangMasuks()
+    {
+        return $this->hasMany(BarangMasuk::class, 'id_supplier', 'id_supplier');
+    }
 }
