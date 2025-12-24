@@ -4,6 +4,9 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
+                <!-- ============================================================== -->
+                <!-- Karyawan -->
+                <!-- ============================================================== -->
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('dashboard')}}" aria-expanded="false">
                         <i class="mdi mdi-view-dashboard"></i>
@@ -44,6 +47,15 @@
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('barang_masuk')}}" aria-expanded="false">
                         <i class="fas fa-sign-in-alt"></i>
                         <span class="hide-menu">Barang Masuk</span>
+                    </a>
+                </li>
+                <!-- ============================================================== -->
+                <!-- Pemilik -->
+                <!-- ============================================================== -->
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('laporan_stok_barang')}}" aria-expanded="false">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="hide-menu">Laporan Stok Barang</span>
                     </a>
                 </li>
             </ul>
