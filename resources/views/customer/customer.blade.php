@@ -4,11 +4,11 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">Kategori</h4>
+                <h4 class="page-title">Customer</h4>
                 <div class="ml-auto text-right">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Kategori</a></li>
+                            <li class="breadcrumb-item"><a href="#">Customer</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Modal Add Category -->
-        <div class="modal fade none-border" id="add_kategori">
+        <div class="modal fade none-border" id="add_customer">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form id="formTambah">
@@ -33,9 +33,21 @@
                             @csrf
                             <div class="row">
                                 <div class="col-12">
-                                    <label class="control-label">Nama Kategori</label>
-                                    <input class="form-control form-white" type="text" id="nama_kategori"
-                                        name="nama_kategori" />
+                                    <label class="control-label">Nama Customer</label>
+                                    <input class="form-control form-white" type="text" id="nama_customer"
+                                        name="nama_customer">
+                                </div>
+                                <div class="col-12">
+                                    <label class="control-label">Alamat</label>
+                                    <input class="form-control form-white" type="text" id="alamat" name="alamat">
+                                </div>
+                                <div class="col-12">
+                                    <label class="control-label">Email</label>
+                                    <input class="form-control form-white" type="text" id="email" name="email">
+                                </div>
+                                <div class="col-12">
+                                    <label class="control-label">Telp</label>
+                                    <input class="form-control form-white" type="text" id="telepon" name="telepon">
                                 </div>
                             </div>
                         </div>
@@ -56,12 +68,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Kategori</h5>
+                        <h5 class="card-title">Customer</h5>
                         <div class="table-responsive">
                             <table id="zero_config" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Nama Kategori</th>
+                                        <th>Nama Customer</th>
+                                        <th>ALamat</th>
+                                        <th>Email</th>
+                                        <th>Telepon</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -96,12 +111,18 @@
             var table = $('#zero_config').DataTable({
                 processing: true,
                 serverSide: false,
-                ajax: "{{ route('getkategori') }}",
+                ajax: "{{ route('getcustomer') }}",
                 columns: [{
-                        data: 'nama_kategori'
+                        data: 'nama_customer'
+                    }, {
+                        data: 'alamat'
+                    }, {
+                        data: 'email'
+                    }, {
+                        data: 'telepon'
                     },
                     {
-                        data: 'id_kategori',
+                        data: 'id_customer',
                         render: function(data) {
                             return `
                             <button onclick="editForm(${data})" class="btn btn-warning btn-sm">Edit</button>
@@ -115,8 +136,8 @@
             $('#formTambah').on('submit', function(e) {
                 e.preventDefault();
                 let id = $('#id').val();
-                let url = id ? "{{ url('kategori/update') }}/" + id :
-                    "{{ route('kategori.store') }}";
+                let url = id ? "{{ url('customer/update') }}/" + id :
+                    "{{ route('customer.store') }}";
                 $.ajax({
                     url: url,
                     method: "POST",
@@ -124,7 +145,7 @@
                     success: function(response) {
                         alert(response.success);
                         table.ajax.reload(); // Refresh tabel tanpa reload halaman
-                        $('#add_kategori').modal('hide');
+                        $('#add_customer').modal('hide');
                     },
                 });
             });
@@ -133,7 +154,7 @@
         function deleteProduct(id) {
             if (confirm("Yakin hapus?")) {
                 $.ajax({
-                    url: "{{ url('kategori') }}/" + id,
+                    url: "{{ url('customer') }}/" + id,
                     type: "DELETE",
                     data: {
                         _token: "{{ csrf_token() }}"
@@ -148,15 +169,18 @@
         function addForm() {
             $('#id').val('');
             $('#formTambah')[0].reset();
-            $('#add_kategori').modal('show');
+            $('#add_customer').modal('show');
         }
 
         function editForm(id) {
-            $.get("{{ url('kategori/edit') }}/" + id, function(data) {
-                $('#formTambah')[0].reset();
-                $('#id').val(data.id_kategori);
-                $('#nama_kategori').val(data.nama_kategori);
-                $('#add_kategori').modal('show');
+            $('#formTambah')[0].reset();
+            $.get("{{ url('customer/edit') }}/" + id, function(data) {
+                $('#id').val(data.id_customer);
+                $('#nama_customer').val(data.nama_customer);
+                $('#alamat').val(data.alamat);
+                $('#email').val(data.email);
+                $('#telepon').val(data.telepon);
+                $('#add_customer').modal('show');
             });
         }
     </script>

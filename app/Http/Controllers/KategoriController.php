@@ -48,6 +48,6 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         kategori::find($id)->delete();
-        return response()->json(['success' => 'Produk dihapus!']);
+        return response()->json(['success' => 'Kategori dihapus!']);
     }
 }

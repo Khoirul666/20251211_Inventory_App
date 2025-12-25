@@ -45,10 +45,20 @@ Route::controller(BarangController::class)->group(function () {
 
 Route::controller(CustomerController::class)->group(function () {
     Route::get('customer', 'customer');
+    Route::get('getcustomer', 'getcustomer')->name('getcustomer');
+    Route::post('customer', 'store')->name('customer.store');
+    Route::delete('customer/{id}', 'destroy')->name('customer.destroy');
+    Route::get('customer/edit/{id}', 'edit')->name('customer.edit');
+    Route::post('customer/update/{id}', 'update')->name('customer.update');
 });
 
 Route::controller(SupplierController::class)->group(function () {
     Route::get('supplier', 'supplier');
+    Route::get('getsupplier', 'getsupplier')->name('getsupplier');
+    Route::post('supplier', 'store')->name('supplier.store');
+    Route::delete('supplier/{id}', 'destroy')->name('supplier.destroy');
+    Route::get('supplier/edit/{id}', 'edit')->name('supplier.edit');
+    Route::post('supplier/update/{id}', 'update')->name('supplier.update');
 });
 
 Route::controller(BarangKeluarController::class)->group(function () {
