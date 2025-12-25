@@ -26,10 +26,21 @@ Route::controller(DashboardController::class)->group(function () {
 
 Route::controller(KategoriController::class)->group(function () {
     Route::get('kategori', 'kategori');
+    Route::get('getkategori', 'getkategori')->name('getkategori');
+    Route::post('kategori', 'store')->name('kategori.store');
+    Route::delete('kategori/{id}', 'destroy')->name('kategori.destroy');
+    Route::get('kategori/edit/{id}', 'edit')->name('kategori.edit');
+    Route::post('kategori/update/{id}', 'update')->name('kategori.update');
 });
 
 Route::controller(BarangController::class)->group(function () {
     Route::get('barang', 'barang');
+    Route::get('getbarang', 'getbarang')->name('getbarang');
+    Route::get('barang/getkategori', 'getkategori')->name('barang.getkategori');
+    Route::post('barang', 'store')->name('barang.store');
+    Route::delete('barang/{id}', 'destroy')->name('barang.destroy');
+    Route::get('barang/edit/{id}', 'edit')->name('barang.edit');
+    Route::post('barang/update/{id}', 'update')->name('barang.update');
 });
 
 Route::controller(CustomerController::class)->group(function () {
