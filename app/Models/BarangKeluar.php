@@ -8,19 +8,15 @@ class BarangKeluar extends Model
 {
     protected $fillable = [
         'id_barangkeluar',
+        'id_barang',
+        'id_invoicepenjualan',
         'tgl_keluar',
         'nama_barang',
+        'jumlah',
         'harga_jual',
-        'id_customer',
-        'id_barang',
     ];
 
     protected $primaryKey = 'id_barangkeluar';
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'id_customer', 'id_customer');
-    }
 
     public function barang()
     {
@@ -29,6 +25,6 @@ class BarangKeluar extends Model
 
     public function invoicePenjualan()
     {
-        return $this->hasOne(InvoicePenjualan::class, 'id_barangkeluar', 'id_barangkeluar');
+        return $this->belongsTo(InvoicePenjualan::class, 'id_invoicepenjualan', 'id_invoicepenjualan');
     }
 }

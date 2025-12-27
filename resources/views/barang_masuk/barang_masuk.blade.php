@@ -135,7 +135,7 @@
                         name: 'harga_jual'
                     },
                     {
-                        data: 'id_barang',
+                        data: 'id_kategori',
                         render: function(data, type, row) {
                             // console.log(data);
                             return `

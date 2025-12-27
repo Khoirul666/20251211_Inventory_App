@@ -16,8 +16,8 @@ class Supplier extends Model
 
     protected $primaryKey = 'id_supplier';
 
-    public function barangMasuks()
+    public function invoicePembelian()
     {
-        return $this->hasMany(BarangMasuk::class, 'id_supplier', 'id_supplier');
+        return $this->hasMany(InvoicePembelian::class, 'id_supplier', 'id_supplier');
     }
 }

@@ -4,11 +4,11 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">Barang</h4>
+                <h4 class="page-title">Barang Keluar</h4>
                 <div class="ml-auto text-right">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Barang</a></li>
+                            <li class="breadcrumb-item"><a href="#">Barang Keluar</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -24,41 +24,25 @@
         </div>
 
         <!-- Modal Add Category -->
-        <div class="modal fade none-border" id="add_barang">
+        <div class="modal fade none-border" id="add_customer">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="formTambah">
+                    <form id="formTambah" method="POST" action="{{ url('barang_keluar') }}">
                         <div class="modal-body">
                             <input type="hidden" name="id" id="id">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
-                                    <label class="control-label">Kategori</label>
-                                    <select class="form-control" data-placeholder="Pilih Kategori" id="kategori"
-                                        name="id_kategori">
+                                    <label class="control-label">Customer</label>
+                                    <select class="form-control" data-placeholder="Pilih Customer" id="customer"
+                                        name="id_customer">
                                     </select>
-                                </div>
-                                <div class="col-12">
-                                    <label class="control-label">Nama Barang</label>
-                                    <input class="form-control" type="text" id="nama_barang" name="nama_barang">
-                                </div>
-                                <div class="col-12">
-                                    <label class="control-label">Jumlah</label>
-                                    <input class="form-control" type="number" id="jumlah" name="jumlah">
-                                </div>
-                                <div class="col-12">
-                                    <label class="control-label">Harga Jual</label>
-                                    <input class="form-control" type="number" id="harga_jual" name="harga_jual">
-                                </div>
-                                <div class="col-12">
-                                    <label class="control-label">Harga Beli</label>
-                                    <input class="form-control" type="number" id="harga_beli" name="harga_beli">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-success ml-auto">Simpan</button>
+                            <button type="submit" class="btn btn-success ml-auto">Pilih</button>
                         </div>
                     </form>
                 </div>
@@ -78,11 +62,11 @@
                             <table id="zero_config" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Kategori</th>
-                                        <th>Nama Barang</th>
-                                        <th>Jumlah</th>
-                                        <th>Harga Beli</th>
-                                        <th>Harga Jual</th>
+                                        <th>No</th>
+                                        <th>Customer</th>
+                                        <th>Tanggal</th>
+                                        <th>Total Item</th>
+                                        <th>Total Harga</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -117,82 +101,76 @@
             var table = $('#zero_config').DataTable({
                 processing: true,
                 serverSide: false,
-                ajax: "{{ route('getbarang') }}",
+                ajax: "{{ url('invoice_penjualan/get_data') }}",
+                order: [
+                    [4, 'desc']
+                ],
                 columns: [{
-                        data: 'kategori.nama_kategori',
-                        name: 'kategori.nama_kategori'
+                        // 1. Kolom Nomor Urut
+                        data: null,
+                        sortable: false,
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     }, {
-                        data: 'nama_barang',
-                        name: 'nama_barang'
+                        data: 'customer.nama_customer',
                     }, {
-                        data: 'jumlah',
-                        name: 'jumlah'
+                        data: 'tgl_cetak',
                     }, {
-                        data: 'harga_beli',
-                        name: 'harga_beli'
+                        name: 'barangkeluar',
+                        render: function(data, type, row) {
+                            // return row.barangkeluar.length;
+
+                            if (row.barangkeluar && Array.isArray(row.barangkeluar)) {
+
+                                // Opsi A: Jika ingin menghitung TOTAL JUMLAH (sum of qty)
+                                let totalQty = row.barangkeluar.reduce((total, item) => {
+                                    return total + parseInt(item.jumlah);
+                                }, 0);
+
+                                // Opsi B: Jika ingin menghitung JUMLAH JENIS BARANG (count)
+                                // let totalJenis = row.barang_keluar.length;
+
+                                return `${totalQty} Item`;
+                            }
+                            return '0';
+                        }
                     }, {
-                        data: 'harga_jual',
-                        name: 'harga_jual'
+                        data: 'total_harga',
+                        render: function(data) {
+                            return 'Rp ' + parseInt(data).toLocaleString('id-ID');
+                        }
                     },
                     {
-                        data: 'id_barang',
+                        data: 'id_invoicepenjualan',
                         render: function(data, type, row) {
-                            // console.log(data);
                             return `
-                            <button onclick="editForm(${row.id_barang})" class="btn btn-warning btn-sm">Edit</button>
-                            <button onclick="deleteProduct(${row.id_barang})" class="btn btn-danger btn-sm">Hapus</button>
+                            <button onclick="exportData(${row.id_invoicepenjualan})" class="btn btn-danger btn-sm">EXPORT</button>
                             `;
                         }
                     }
                 ]
             });
-
-            $('#formTambah').on('submit', function(e) {
-                e.preventDefault();
-                let id = $('#id').val();
-                let url = id ? "{{ url('barang/update') }}/" + id :
-                    "{{ route('barang.store') }}";
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        console.log(response);
-                        alert(response.success);
-                        table.ajax.reload(); // Refresh tabel tanpa reload halaman
-                        $('#add_barang').modal('hide');
-                    },
-                });
-            });
         })
 
-        function deleteProduct(id) {
-            if (confirm("Yakin hapus?")) {
-                $.ajax({
-                    url: "{{ url('barang') }}/" + id,
-                    type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        $('#zero_config').DataTable().ajax.reload();
-                    }
-                });
+        function exportData(id) {
+            if (confirm("Yakin Expo?")) {
+
             }
         }
 
         function addForm() {
             $('#id').val('');
             $('#formTambah')[0].reset();
-            $('#kategori').empty();
-            $('#kategori').append('<option value="">-- Pilih Kategori --</option>');
-            $.get("{{ route('barang.getkategori') }}", function(data) {
-                $.each(data, function(key, value) {
-                    $('#kategori').append('<option value="' + value.id_kategori + '">' + value
-                        .nama_kategori + '</option>');
+            $('#customer').empty();
+            $('#customer').append('<option value="">-- Pilih Customer --</option>');
+            $.get("{{ route('getcustomer') }}", function(data) {
+                $.each(data.data, function(key, value) {
+                    $('#customer').append('<option value="' + value.id_customer + '">' + value
+                        .nama_customer + '</option>');
                 });
             });
-            $('#add_barang').modal('show');
+            $('#add_customer').modal('show');
         }
 
         function editForm(id) {
@@ -221,7 +199,7 @@
                 $('#jumlah').val(data.jumlah);
                 $('#harga_jual').val(data.harga_jual);
                 $('#harga_beli').val(data.harga_beli);
-                $('#add_barang').modal('show');
+                $('#add_customer').modal('show');
             });
         }
     </script>

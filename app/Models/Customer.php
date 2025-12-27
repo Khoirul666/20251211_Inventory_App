@@ -16,8 +16,8 @@ class Customer extends Model
 
     protected $primaryKey = 'id_customer';
 
-    public function barangKeluars()
+    public function invoicePenjualan()
     {
-        return $this->hasMany(BarangKeluar::class, 'id_customer', 'id_customer');
+        return $this->hasMany(InvoicePembelian::class, 'id_customer', 'id_customer');
     }
 }

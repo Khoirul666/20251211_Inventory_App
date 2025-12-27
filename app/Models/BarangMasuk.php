@@ -9,19 +9,15 @@ class BarangMasuk extends Model
 
     protected $fillable = [
         'id_barangmasuk',
+        'id_invoicepembelian',
+        'id_barang',
         'tgl_masuk',
         'nama_barang',
+        'jumlah',
         'harga_beli',
-        'id_supplier',
-        'id_barang',
     ];
 
     protected $primaryKey = 'id_barangmasuk';
-
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class, 'id_supplier', 'id_supplier');
-    }
 
     public function barang()
     {
@@ -30,6 +26,6 @@ class BarangMasuk extends Model
 
     public function invoicePembelian()
     {
-        return $this->hasOne(InvoicePembelian::class, 'id_barangmasuk', 'id_barangmasuk');
+        return $this->belongsTo(InvoicePembelian::class, 'id_invoicepembelian', 'id_invoicepembelian');
     }
 }

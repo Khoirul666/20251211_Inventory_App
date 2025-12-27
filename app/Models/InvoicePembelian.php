@@ -10,13 +10,18 @@ class InvoicePembelian extends Model
         'id_invoicepembelian',
         'total_harga',
         'tgl_cetak',
-        'id_barangmasuk',
+        'id_supplier',
     ];
 
     protected $primaryKey = 'id_invoicepembelian';
 
     public function barangMasuk()
     {
-        return $this->belongsTo(BarangMasuk::class, 'id_barangmasuk', 'id_barangmasuk');
+        return $this->hasMany(BarangMasuk::class, 'id_invoicepembelian', 'id_invoicepembelian');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'id_supplier', 'id_supplier');
     }
 }

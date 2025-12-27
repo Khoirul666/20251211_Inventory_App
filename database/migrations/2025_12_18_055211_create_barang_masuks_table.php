@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_barangmasuk');
             $table->date('tgl_masuk');
             $table->string('nama_barang');
+            $table->integer('jumlah');
             $table->double('harga_beli');
             $table->timestamps();
         });

@@ -5,6 +5,7 @@ use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoicePenjualanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -63,8 +64,22 @@ Route::controller(SupplierController::class)->group(function () {
 
 Route::controller(BarangKeluarController::class)->group(function () {
     Route::get('barang_keluar', 'barang_keluar');
+    Route::post('barang_keluar', 'set_customer');
+    Route::get('barang_keluar/pilih_barang', 'pilih_barang');
+    Route::post('barang_keluar/pilih_barang', 'pilih_barang_store')->name('pilih_barang.store');
+    Route::get('barang_keluar/list_barang', 'list_barang')->name('list_barang');
+    Route::get('barang_keluar/pilih_barang/edit/{id}', 'list_barang_edit')->name('list_barang_edit');
+    Route::post('barang_keluar/pilih_barang/edit/{id}', 'list_barang_update')->name('list_barang_update');
+    Route::delete('barang_keluar/pilih_barang/edit/{id}', 'list_barang_delete')->name('list_barang_delete');
+    Route::get('barang_keluar/batal/pilih_barang', 'forget_customer');
+    Route::get('checkout', 'checkout');
+    Route::get('getcheckout', 'getcheckout');
 });
 
 Route::controller(BarangMasukController::class)->group(function () {
     Route::get('barang_masuk', 'barang_masuk');
+});
+
+Route::controller(InvoicePenjualanController::class)->group(function () {
+    Route::get('invoice_penjualan/get_data', 'get_data')->name('get_data');
 });
