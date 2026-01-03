@@ -126,13 +126,19 @@
                         name: 'nama_barang'
                     }, {
                         data: 'jumlah',
-                        name: 'jumlah'
+                        render: function(data) {
+                            return parseInt(data).toLocaleString('id-ID') + ' Item';
+                        }
                     }, {
                         data: 'harga_beli',
-                        name: 'harga_beli'
+                        render: function(data) {
+                            return 'Rp ' + parseInt(data).toLocaleString('id-ID');
+                        }
                     }, {
                         data: 'harga_jual',
-                        name: 'harga_jual'
+                        render: function(data) {
+                            return 'Rp ' + parseInt(data).toLocaleString('id-ID');
+                        }
                     },
                     {
                         data: 'id_barang',

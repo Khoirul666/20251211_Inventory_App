@@ -168,6 +168,9 @@ class BarangKeluarController extends Controller
                         'jumlah' => $cart_temp['jumlah_beli'],
                         'harga_jual' => $cart_temp['harga_jual'],
                     ]);
+                    $data_barang->update([
+                        'jumlah' => $data_barang->jumlah - $cart_temp['jumlah_beli'],
+                    ]);
                     $count_total += $cart_temp['jumlah_beli'] * $cart_temp['harga_jual'];
                 }
                 $inv_penjualan->update([
