@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BarangKeluar;
-use App\Models\BarangMasuk;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -48,5 +47,36 @@ class LaporanStokBarangController extends Controller
             ->get();
 
         return DataTables::of($history)->make(true);
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+
+        // Ambil data dengan logika UNION yang sama
+        $masuk = DB::table('barang_masuks')
+            ->select('tgl_masuk as tgl', 'nama_barang', 'jumlah', 'harga_beli as harga', DB::raw('jumlah * harga_beli as total'), DB::raw("'masuk' as tipe"))
+            ->whereBetween('tgl_masuk', [$tgl_awal, $tgl_akhir]);
+
+        $data = DB::table('barang_keluars')
+            ->select('tgl_keluar as tgl', 'nama_barang', 'jumlah', 'harga_jual as harga', DB::raw('jumlah * harga_jual as total'), DB::raw("'keluar' as tipe"))
+            ->whereBetween('tgl_keluar', [$tgl_awal, $tgl_akhir])
+            ->union($masuk)
+            ->orderBy('tgl', 'asc')
+            ->get();
+
+        // Hitung Ringkasan
+        $total_jumlah = $data->sum('jumlah');
+        $grand_total = $data->sum('total');
+
+        $pdf = Pdf::loadView('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
+
+        // // Set kertas ke A4 (opsional)
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->stream('Laporan-Stok.pdf');
+
+        // return view('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
     }
 }

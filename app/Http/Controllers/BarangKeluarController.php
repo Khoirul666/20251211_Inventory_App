@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\BarangKeluar;
 use App\Models\Customer;
 use App\Models\InvoicePenjualan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -185,5 +186,19 @@ class BarangKeluarController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Gagal: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function export_pdf()
+    {
+        $data = InvoicePenjualan::with(['customer', 'barangkeluar'])
+            ->orderBy('invoice_penjualans.created_at', 'desc') // Urutkan di tingkat database
+            ->get();
+
+        $pdf = Pdf::loadView('barang_keluar.export_pdf', compact('data'));
+        $pdf->setPaper('a4', 'portrait');
+        return $pdf->stream('Laporan-Barang_Keluar.pdf');
+
+        // return view('barang_keluar.export_pdf', compact('data'));
+        // return response()->json(['data' => $data]);
     }
 }

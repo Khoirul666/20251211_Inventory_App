@@ -18,7 +18,7 @@
                 <i class="ti-plus"></i> Tambah
             </button>
             <button class="btn m-t-20 m-l-20 btn-danger">
-                <i class="mdi mdi-export"></i> Eksport
+                <i class="mdi mdi-export" onclick="exportData()"></i> Export
             </button>
         </div>
     </div>
@@ -67,7 +67,6 @@
                                     <th>Tanggal</th>
                                     <th>Total Item</th>
                                     <th>Total Harga</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,58 +101,42 @@
                 [4, 'desc']
             ],
             columns: [{
-                    // 1. Kolom Nomor Urut
-                    data: null,
-                    sortable: false,
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                }, {
-                    data: 'customer.nama_customer',
-                }, {
-                    data: 'tgl_cetak',
-                }, {
-                    name: 'barangkeluar',
-                    render: function(data, type, row) {
-                        // return row.barangkeluar.length;
-
-                        if (row.barangkeluar && Array.isArray(row.barangkeluar)) {
-
-                            // Opsi A: Jika ingin menghitung TOTAL JUMLAH (sum of qty)
-                            let totalQty = row.barangkeluar.reduce((total, item) => {
-                                return total + parseInt(item.jumlah);
-                            }, 0);
-
-                            // Opsi B: Jika ingin menghitung JUMLAH JENIS BARANG (count)
-                            // let totalJenis = row.barang_keluar.length;
-
-                            return `${totalQty} Item`;
-                        }
-                        return '0';
-                    }
-                }, {
-                    data: 'total_harga',
-                    render: function(data) {
-                        return 'Rp ' + parseInt(data).toLocaleString('id-ID');
-                    }
-                },
-                {
-                    data: 'id_invoicepenjualan',
-                    render: function(data, type, row) {
-                        return `
-                            <button onclick="exportData(${row.id_invoicepenjualan})" class="btn btn-danger btn-sm">EXPORT</button>
-                            `;
-                    }
+                // 1. Kolom Nomor Urut
+                data: null,
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 }
-            ]
+            }, {
+                data: 'customer.nama_customer',
+            }, {
+                data: 'tgl_cetak',
+            }, {
+                name: 'barangkeluar',
+                render: function(data, type, row) {
+                    // return row.barangkeluar.length;
+
+                    if (row.barangkeluar && Array.isArray(row.barangkeluar)) {
+
+                        // Opsi A: Jika ingin menghitung TOTAL JUMLAH (sum of qty)
+                        let totalQty = row.barangkeluar.reduce((total, item) => {
+                            return total + parseInt(item.jumlah);
+                        }, 0);
+
+                        // Opsi B: Jika ingin menghitung JUMLAH JENIS BARANG (count)
+                        // let totalJenis = row.barang_keluar.length;
+
+                        return `${totalQty} Item`;
+                    }
+                    return '0';
+                }
+            }, {
+                data: 'total_harga',
+                render: function(data) {
+                    return 'Rp ' + parseInt(data).toLocaleString('id-ID');
+                }
+            }, ]
         });
     })
-
-    function exportData(id) {
-        if (confirm("Yakin Export?")) {
-
-        }
-    }
 
     function addForm() {
         $('#id').val('');
@@ -197,6 +180,12 @@
             $('#harga_beli').val(data.harga_beli);
             $('#add_customer').modal('show');
         });
+    }
+
+    function exportData() {
+        console.log('export');
+        // Gunakan window.open agar PDF terbuka di tab baru
+        window.open("{{ route('barang_keluar.export_pdf') }}", '_blank');
     }
 </script>
 @endpush

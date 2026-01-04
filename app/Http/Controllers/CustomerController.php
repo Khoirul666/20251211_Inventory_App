@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -55,5 +56,16 @@ class CustomerController extends Controller
     {
         Customer::find($id)->delete();
         return response()->json(['success' => 'Customer dihapus!']);
+    }
+
+    public function export_pdf()
+    {
+        $data = Customer::get();
+
+        $pdf = Pdf::loadView('customer.export_pdf', compact('data'));
+        $pdf->setPaper('a4', 'portrait');
+        return $pdf->stream('Laporan-Customer.pdf');
+
+        // return view('barang.export_pdf', compact('data'));
     }
 }

@@ -44,6 +44,7 @@ Route::controller(BarangController::class)->prefix('barang')->name('barang.')->g
     Route::delete('/{id}', 'destroy')->name('destroy');
     Route::get('/edit/{id}', 'edit')->name('edit');
     Route::post('/update/{id}', 'update')->name('update');
+    Route::get('/export_pdf', 'export_pdf')->name('export_pdf');
 });
 
 Route::controller(CustomerController::class)->prefix('customer')->name('customer.')->group(function () {
@@ -53,6 +54,7 @@ Route::controller(CustomerController::class)->prefix('customer')->name('customer
     Route::delete('/{id}', 'destroy')->name('destroy');
     Route::get('/edit/{id}', 'edit')->name('edit');
     Route::post('/update/{id}', 'update')->name('update');
+    Route::get('/export_pdf', 'export_pdf')->name('export_pdf');
 });
 
 Route::controller(SupplierController::class)->prefix('supplier')->name('supplier.')->group(function () {
@@ -62,6 +64,7 @@ Route::controller(SupplierController::class)->prefix('supplier')->name('supplier
     Route::delete('/{id}', 'destroy')->name('destroy');
     Route::get('/edit/{id}', 'edit')->name('edit');
     Route::post('/update/{id}', 'update')->name('update');
+    Route::get('/export_pdf', 'export_pdf')->name('export_pdf');
 });
 
 Route::controller(BarangKeluarController::class)->prefix('barang_keluar')->name('barang_keluar.')->group(function () {
@@ -76,6 +79,7 @@ Route::controller(BarangKeluarController::class)->prefix('barang_keluar')->name(
     Route::get('/batal/pilih_barang', 'forget_customer');
     Route::get('/checkout', 'checkout');
     Route::get('/getcheckout', 'getcheckout');
+    Route::get('/export_pdf', 'export_pdf')->name('export_pdf');
 });
 
 Route::controller(BarangMasukController::class)->prefix('barang_masuk')->name('barang_masuk.')->group(function () {
@@ -90,6 +94,7 @@ Route::controller(BarangMasukController::class)->prefix('barang_masuk')->name('b
     Route::get('/batal/pilih_barang', 'forget_supplier');
     Route::get('/checkout', 'checkout');
     Route::get('/getcheckout', 'getcheckout');
+    Route::get('/export_pdf', 'export_pdf')->name('export_pdf');
 });
 
 Route::controller(InvoicePenjualanController::class)->prefix('invoice_penjualan')->name('invoice_penjualan.')->group(function () {
@@ -103,4 +108,5 @@ Route::controller(InvoicePembelianController::class)->prefix('invoice_pembelian'
 Route::controller(LaporanStokBarangController::class)->prefix('laporan_stok_barang')->name('laporan_stok_barang.')->group(function () {
     Route::get('/', 'laporan_stok_barang')->name('laporan_stok_barang');
     Route::get('/get_data', 'get_data')->name('get_data');
+    Route::get('/export_pdf', 'export_pdf')->name('export_pdf');
 });

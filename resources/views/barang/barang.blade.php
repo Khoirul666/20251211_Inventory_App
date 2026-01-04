@@ -18,7 +18,7 @@
                 <i class="ti-plus"></i> Tambah
             </button>
             <button class="btn m-t-20 m-l-20 btn-danger">
-                <i class="mdi mdi-export"></i> Eksport
+                <i class="mdi mdi-export" onclick="exportData()"></i> Export
             </button>
         </div>
     </div>
@@ -229,6 +229,12 @@
             $('#harga_beli').val(data.harga_beli);
             $('#add_barang').modal('show');
         });
+    }
+
+    function exportData() {
+
+        // Gunakan window.open agar PDF terbuka di tab baru
+        window.open("{{ route('barang.export_pdf') }}", '_blank');
     }
 </script>
 @endpush

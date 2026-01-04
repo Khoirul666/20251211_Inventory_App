@@ -139,5 +139,13 @@
         // filterData(tanggal_awal, tanggal_akhir);
         table.ajax.reload();
     }
+
+    function exportData() {
+        var tgl_awal = $('#tanggal_awal').val();
+        var tgl_akhir = $('#tanggal_akhir').val();
+
+        // Gunakan window.open agar PDF terbuka di tab baru
+        window.open("{{ route('laporan_stok_barang.export_pdf') }}?tgl_awal=" + tgl_awal + "&tgl_akhir=" + tgl_akhir, '_blank');
+    }
 </script>
 @endpush
