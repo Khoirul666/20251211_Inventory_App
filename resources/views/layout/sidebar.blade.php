@@ -13,6 +13,8 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+                @if(Auth::check())
+                @if(Auth::user()->role==='karyawan')
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('kategori')}}" aria-expanded="false">
                         <i class="fas fa-clipboard-list"></i>
@@ -52,12 +54,16 @@
                 <!-- ============================================================== -->
                 <!-- Pemilik -->
                 <!-- ============================================================== -->
+                @endif
+                @if(Auth::user()->role==='pemilik')
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('laporan_stok_barang')}}" aria-expanded="false">
                         <i class="fas fa-clipboard-list"></i>
                         <span class="hide-menu">Laporan Stok Barang</span>
                     </a>
                 </li>
+                @endif
+                @endif
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

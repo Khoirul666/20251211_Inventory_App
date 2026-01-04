@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_login');
             $table->string('username')->unique();
             $table->string('password');
+            $table->enum('role', ['pemilik', 'karyawan'])->default('karyawan');
             $table->rememberToken();
             $table->timestamps();
         });

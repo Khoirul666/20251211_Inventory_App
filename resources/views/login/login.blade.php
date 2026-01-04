@@ -139,7 +139,7 @@
                                         type="text"
                                         class="form-control"
                                         id="email"
-                                        name="email-username"
+                                        name="email"
                                         placeholder="Enter your username"
                                         autofocus />
                                 </div>

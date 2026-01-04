@@ -16,6 +16,7 @@ class User extends Authenticatable
         'id_login',
         'username',
         'password',
+        'role',
     ];
 
     protected $primaryKey = 'id_login';
