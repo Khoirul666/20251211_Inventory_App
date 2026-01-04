@@ -38,7 +38,7 @@ class BarangKeluarController extends Controller
 
     public function list_barang()
     {
-        $cart = Session::get('cart_barang', []);
+        $cart = Session::get('cart_barang_keluar', []);
         // return response()->json([
         //     'data' => array_values($cart)
         // ]);
@@ -72,7 +72,7 @@ class BarangKeluarController extends Controller
 
     public function list_barang_edit($id)
     {
-        $cart = Session::get('cart_barang');
+        $cart = Session::get('cart_barang_keluar');
         $data = $cart[$id] ?? null;
         if ($data) {
             return $data;
@@ -81,13 +81,13 @@ class BarangKeluarController extends Controller
 
     public function list_barang_update($id, Request $request)
     {
-        $cart = Session::get('cart_barang');
+        $cart = Session::get('cart_barang_keluar');
         if (isset($cart[$id])) {
 
             $cart[$id]['jumlah_beli'] = $request->jumlah;
             $cart[$id]['total'] = $cart[$id]['harga_jual'] * $request->jumlah;
 
-            Session::put('cart_barang', $cart);
+            Session::put('cart_barang_keluar', $cart);
             return response()->json(['success' => 'Barang berhasil diubah']);
         }
         return response()->json(['message' => 'Barang tidak ditemukan'], 404);
@@ -95,10 +95,10 @@ class BarangKeluarController extends Controller
 
     public function list_barang_delete($id)
     {
-        $cart = Session::get('cart_barang');
+        $cart = Session::get('cart_barang_keluar');
         if (isset($cart[$id])) {
             unset($cart[$id]);
-            Session::put('cart_barang', $cart);
+            Session::put('cart_barang_keluar', $cart);
             return response()->json(['success' => 'Barang berhasil dihapus dari keranjang']);
         }
 
@@ -108,7 +108,7 @@ class BarangKeluarController extends Controller
     public function pilih_barang_store(Request $request)
     {
         $barang = Barang::findOrFail($request->id_barang);
-        $cart = Session::get('cart_barang', []);
+        $cart = Session::get('cart_barang_keluar', []);
         $cart[$barang->id_barang] = [
             'id_barang' => $barang->id_barang,
             'id_kategori' => $barang->id_kategori,
@@ -118,7 +118,7 @@ class BarangKeluarController extends Controller
             'jumlah_beli' => $request->jumlah,
             'total' => $request->jumlah * $barang->harga_jual,
         ];
-        Session::put('cart_barang', $cart);
+        Session::put('cart_barang_keluar', $cart);
 
         return response()->json(['success' => 'barang berhasil ditambah!']);
     }
@@ -126,14 +126,14 @@ class BarangKeluarController extends Controller
     public function forget_customer()
     {
         Session::forget('selected_customer');
-        Session::forget('cart_barang');
+        Session::forget('cart_barang_keluar');
         return redirect('barang_keluar');
     }
 
     public function checkout()
     {
         $data = [
-            'data_barang' => Session::get('cart_barang'),
+            'data_barang' => Session::get('cart_barang_keluar'),
             'data_user' => Session::get('selected_customer')
         ];
         return $data;
@@ -142,7 +142,7 @@ class BarangKeluarController extends Controller
     public function getcheckout()
     {
         // return "aaa";
-        $cart = Session::get('cart_barang');
+        $cart = Session::get('cart_barang_keluar');
         $id_cs = Session::get('selected_customer');
         // dd($cart, $id_cs);
         if (empty($cart) || !$id_cs) {
@@ -177,7 +177,7 @@ class BarangKeluarController extends Controller
                     'total_harga' => $count_total,
                 ]);
 
-                Session::forget('cart_barang');
+                Session::forget('cart_barang_keluar');
                 Session::forget('selected_customer');
                 // dd($cart, $id_cs, $inv_penjualan, $inv_penjualan->tgl_cetak);
             });

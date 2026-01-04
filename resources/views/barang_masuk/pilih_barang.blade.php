@@ -4,7 +4,7 @@
 <div class="page-breadcrumb">
     <div class="row">
         <div class="col-12 d-flex no-block align-items-center">
-            <h4 class="page-title">Customer {{ $customer->nama_customer }}</h4>
+            <h4 class="page-title">Supplier {{ $supplier->nama_supplier }}</h4>
             <div class="ml-auto text-right">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
@@ -17,7 +17,7 @@
             <button class="btn m-t-20 btn-info" onclick="addForm()">
                 <i class="ti-plus"></i> Tambah
             </button>
-            <a class="btn m-t-20 m-l-20 btn-danger" href="{{ url('barang_keluar/batal/pilih_barang') }}">
+            <a class="btn m-t-20 m-l-20 btn-danger" href="{{ url('barang_masuk/batal/pilih_barang') }}">
                 <i class="mdi mdi-export"></i> Batal
             </a>
             <button class="btn m-t-20 m-l-20 btn-primary" onclick="checkout()">
@@ -98,7 +98,7 @@
                                     <th>Kategori</th>
                                     <th>Nama Barang</th>
                                     <th>Jumlah Beli</th>
-                                    <th>Harga Jual</th>
+                                    <th>Harga Beli</th>
                                     <th>Total</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -148,15 +148,15 @@
                 data: 'harga_beli',
                 name: 'harga_beli'
             }, {
-                data: 'harga_jual',
-                name: 'harga_jual'
+                data: 'harga_beli',
+                name: 'harga_beli'
             }]
         });
 
         var list = $('#list_barang').DataTable({
             processing: true,
             serverSide: false,
-            ajax: "{{ route('barang_keluar.list_barang') }}",
+            ajax: "{{ route('barang_masuk.list_barang') }}",
             columns: [{
                 data: 'nama_kategori'
             }, {
@@ -164,7 +164,7 @@
             }, {
                 data: 'jumlah_beli',
             }, {
-                data: 'harga_jual',
+                data: 'harga_beli',
             }, {
                 data: 'total',
             }, {
@@ -182,8 +182,8 @@
         $('#formTambah').on('submit', function(e) {
             e.preventDefault();
             let id = $('#id').val();
-            let url = id ? "{{ url('barang_keluar/pilih_barang/edit/') }}/" + id :
-                "{{ route('barang_keluar.store') }}";
+            let url = id ? "{{ url('barang_masuk/pilih_barang/edit/') }}/" + id :
+                "{{ route('barang_masuk.store') }}";
             $.ajax({
                 url: url,
                 method: "POST",
@@ -200,7 +200,7 @@
     function deleteProduct(id) {
         if (confirm("Yakin hapus?")) {
             $.ajax({
-                url: "{{ url('barang_keluar/pilih_barang/edit') }}/" + id,
+                url: "{{ url('barang_masuk/pilih_barang/edit') }}/" + id,
                 type: "DELETE",
                 data: {
                     _token: "{{ csrf_token() }}"
@@ -214,10 +214,10 @@
     }
 
     function checkout() {
-        $.get("{{ url('barang_keluar/checkout') }}", function(response) {
+        $.get("{{ url('barang_masuk/checkout') }}", function(response) {
             if (response.data_barang && Object.keys(response.data_barang).length > 0) {
-                // window.location.href = "{{ url('barang_keluar/getcheckout') }}";
-                $.get("{{ url('barang_keluar/getcheckout') }}", function(response) {
+                // window.location.href = "{{ url('barang_masuk/getcheckout') }}";
+                $.get("{{ url('barang_masuk/getcheckout') }}", function(response) {
                     alert(response.message);
                     location.reload();
                 });
@@ -243,7 +243,7 @@
     }
 
     function editForm(id) {
-        $.get("{{ url('barang_keluar/pilih_barang/edit') }}/" + id, function(data) {
+        $.get("{{ url('barang_masuk/pilih_barang/edit') }}/" + id, function(data) {
             // console.log(data);
             $('#formTambah')[0].reset();
             $('#id').val(data.id_barang);
