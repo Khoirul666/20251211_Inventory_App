@@ -65,17 +65,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($data as $row)
-            <tr>
-                <td>{{ $row->tgl }}</td>
-                <td>{{ $row->nama_barang }}</td>
-                <td class="{{ $row->tipe == 'masuk' ? 'badge-masuk' : 'badge-keluar' }}">
-                    {{ strtoupper($row->tipe) }}
-                </td>
-                <td>{{ number_format($row->jumlah) }}</td>
-                <td class="text-right">Rp {{ number_format($row->harga) }}</td>
-                <td class="text-right">Rp {{ number_format($row->total) }}</td>
-            </tr>
+            @foreach ($data as $row)
+                <tr>
+                    <td>{{ $row->tgl }}</td>
+                    <td>{{ $row->nama_barang }}</td>
+                    <td class="{{ $row->tipe == 'masuk' ? 'badge-masuk' : 'badge-keluar' }}">
+                        {{ strtoupper($row->tipe) }}
+                    </td>
+                    <td>{{ number_format($row->jumlah) }}</td>
+                    <td class="text-right">Rp {{ number_format($row->harga) }}</td>
+                    <td class="text-right">Rp {{ number_format($row->total) }}</td>
+                </tr>
             @endforeach
         </tbody>
         <tfoot>

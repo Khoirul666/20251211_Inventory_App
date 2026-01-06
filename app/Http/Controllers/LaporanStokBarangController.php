@@ -18,6 +18,7 @@ class LaporanStokBarangController extends Controller
     {
         $tgl_awal = $request->tgl_awal ?: now()->toDateString();
         $tgl_akhir = $request->tgl_akhir ?: now()->toDateString();
+        $tipe = $request->tipe;
         $masuk = DB::table('barang_masuks')
             ->select(
                 'id_barangmasuk as id',
@@ -30,7 +31,7 @@ class LaporanStokBarangController extends Controller
                 DB::raw("'masuk' as tipe")
             )->whereBetween('tgl_masuk', [$tgl_awal, $tgl_akhir]);
 
-        $history = DB::table('barang_keluars')
+        $keluar = DB::table('barang_keluars')
             ->select(
                 'id_barangkeluar as id',
                 'tgl_keluar as tgl',
@@ -41,42 +42,58 @@ class LaporanStokBarangController extends Controller
                 'created_at',
                 DB::raw("'keluar' as tipe")
             )
-            ->whereBetween('tgl_keluar', [$tgl_awal, $tgl_akhir])
-            ->union($masuk)
-            ->orderBy('created_at', 'desc')
+            ->whereBetween('tgl_keluar', [$tgl_awal, $tgl_akhir]);
+
+        if ($tipe == 'masuk') {
+            $history = $masuk;
+        } elseif ($tipe == 'keluar') {
+            $history = $keluar;
+        } else {
+            $history = $keluar->union($masuk);
+        }
+
+        $history->orderBy('created_at', 'desc')
             ->get();
 
         return DataTables::of($history)->make(true);
+        // return $request->tipe;
     }
 
     public function export_pdf(Request $request)
     {
         $tgl_awal = $request->tgl_awal;
         $tgl_akhir = $request->tgl_akhir;
+        $tipe = $request->tipe;
 
         // Ambil data dengan logika UNION yang sama
         $masuk = DB::table('barang_masuks')
             ->select('tgl_masuk as tgl', 'nama_barang', 'jumlah', 'harga_beli as harga', DB::raw('jumlah * harga_beli as total'), DB::raw("'masuk' as tipe"))
             ->whereBetween('tgl_masuk', [$tgl_awal, $tgl_akhir]);
 
-        $data = DB::table('barang_keluars')
+        $keluar = DB::table('barang_keluars')
             ->select('tgl_keluar as tgl', 'nama_barang', 'jumlah', 'harga_jual as harga', DB::raw('jumlah * harga_jual as total'), DB::raw("'keluar' as tipe"))
-            ->whereBetween('tgl_keluar', [$tgl_awal, $tgl_akhir])
-            ->union($masuk)
-            ->orderBy('tgl', 'asc')
-            ->get();
+            ->whereBetween('tgl_keluar', [$tgl_awal, $tgl_akhir]);
 
+        if ($tipe == 'masuk') {
+            $data = $masuk;
+        } elseif ($tipe == 'keluar') {
+            $data = $keluar;
+        } else {
+            $data = $keluar->union($masuk);
+        }
+        // dd($data);
+        $data->orderBy('tgl', 'asc')->get();
         // Hitung Ringkasan
         $total_jumlah = $data->sum('jumlah');
         $grand_total = $data->sum('total');
 
-        $pdf = Pdf::loadView('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
+        // $pdf = Pdf::loadView('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
 
-        // // Set kertas ke A4 (opsional)
-        $pdf->setPaper('a4', 'portrait');
+        // // // Set kertas ke A4 (opsional)
+        // $pdf->setPaper('a4', 'portrait');
 
-        return $pdf->stream('Laporan-Stok.pdf');
-
-        // return view('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
+        // return $pdf->stream('Laporan-Stok.pdf');
+        // dd($data);
+        return view('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
     }
 }
