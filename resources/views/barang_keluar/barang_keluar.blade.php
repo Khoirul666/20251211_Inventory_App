@@ -17,8 +17,8 @@
             <button class="btn m-t-20 btn-info" onclick="addForm()">
                 <i class="ti-plus"></i> Tambah
             </button>
-            <button class="btn m-t-20 m-l-20 btn-danger">
-                <i class="mdi mdi-export" onclick="exportData()"></i> Export
+            <button class="btn m-t-20 m-l-20 btn-danger" onclick="exportData()">
+                <i class="mdi mdi-export"></i> Export
             </button>
         </div>
     </div>

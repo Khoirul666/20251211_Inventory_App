@@ -9,6 +9,7 @@ class Barang extends Model
     protected $fillable = [
         'id_barang',
         'nama_barang',
+        'satuan',
         'jumlah',
         'harga_beli',
         'harga_jual',

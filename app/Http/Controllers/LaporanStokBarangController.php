@@ -76,24 +76,27 @@ class LaporanStokBarangController extends Controller
 
         if ($tipe == 'masuk') {
             $data = $masuk;
+            $jenis = "MASUK";
         } elseif ($tipe == 'keluar') {
             $data = $keluar;
+            $jenis = "KELUAR";
         } else {
             $data = $keluar->union($masuk);
+            $jenis = "";
         }
         // dd($data);
-        $data->orderBy('tgl', 'asc')->get();
+        $data = $data->orderBy('tgl', 'asc')->get();
         // Hitung Ringkasan
         $total_jumlah = $data->sum('jumlah');
         $grand_total = $data->sum('total');
 
-        // $pdf = Pdf::loadView('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
+        $pdf = Pdf::loadView('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total','jenis'));
 
-        // // // Set kertas ke A4 (opsional)
-        // $pdf->setPaper('a4', 'portrait');
+        // Set kertas ke A4 (opsional)
+        $pdf->setPaper('a4', 'portrait');
 
-        // return $pdf->stream('Laporan-Stok.pdf');
+        return $pdf->stream('Laporan-Stok.pdf');
         // dd($data);
-        return view('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total'));
+        // return view('laporan_stok_barang.export_pdf', compact('data', 'tgl_awal', 'tgl_akhir', 'total_jumlah', 'grand_total','jenis'));
     }
 }

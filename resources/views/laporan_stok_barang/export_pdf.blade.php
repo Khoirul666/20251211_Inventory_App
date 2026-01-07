@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Laporan Stok Barang</title>
+    <title>Laporan Stok Barang {{$jenis}}</title>
     <style>
         body {
             font-family: sans-serif;
@@ -49,7 +49,7 @@
 
 <body>
     <div class="header">
-        <h2>LAPORAN MUTASI STOK BARANG</h2>
+        <h2>LAPORAN MUTASI STOK BARANG {{$jenis}}</h2>
         <p>Periode: {{ $tgl_awal }} s/d {{ $tgl_akhir }}</p>
     </div>
 

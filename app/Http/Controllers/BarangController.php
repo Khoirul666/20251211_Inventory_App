@@ -38,6 +38,7 @@ class BarangController extends Controller
         $barang->update([
             'id_kategori' => $request->id_kategori,
             'nama_barang' => $request->nama_barang,
+            'satuan' => $request->satuan,
             'jumlah' => $request->jumlah,
             'harga_jual' => $request->harga_jual,
             'harga_beli' => $request->harga_beli,
@@ -52,6 +53,7 @@ class BarangController extends Controller
             [
                 'id_kategori' => $request->id_kategori,
                 'nama_barang' => $request->nama_barang,
+                'satuan' => $request->satuan,
                 'jumlah' => $request->jumlah,
                 'harga_jual' => $request->harga_jual,
                 'harga_beli' => $request->harga_beli,

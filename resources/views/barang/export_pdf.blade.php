@@ -57,6 +57,7 @@
             <tr>
                 <th>Kategori</th>
                 <th>Nama Barang</th>
+                <th>Satuan</th>
                 <th>Jumlah</th>
                 <th>Harga Beli</th>
                 <th>Harga Jual</th>
@@ -67,6 +68,7 @@
             <tr>
                 <td>{{ $row->kategori->nama_kategori }}</td>
                 <td>{{ $row->nama_barang }}</td>
+                <td>{{ strtoupper($row->satuan) }}</td>
                 <td>{{ $row->jumlah }} Item</td>
                 <td>Rp {{ number_format($row->harga_beli, 0, ',', '.') }}</td>
                 <td>Rp {{ number_format($row->harga_jual, 0, ',', '.') }}</td>

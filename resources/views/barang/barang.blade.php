@@ -17,8 +17,8 @@
             <button class="btn m-t-20 btn-info" onclick="addForm()">
                 <i class="ti-plus"></i> Tambah
             </button>
-            <button class="btn m-t-20 m-l-20 btn-danger">
-                <i class="mdi mdi-export" onclick="exportData()"></i> Export
+            <button class="btn m-t-20 m-l-20 btn-danger" onclick="exportData()">
+                <i class="mdi mdi-export"></i> Export
             </button>
         </div>
     </div>
@@ -34,13 +34,17 @@
                         <div class="row">
                             <div class="col-12">
                                 <label class="control-label">Kategori</label>
-                                <select class="form-control" data-placeholder="Pilih Kategori" id="kategori"
-                                    name="id_kategori">
+                                <select class="form-control" data-placeholder="Pilih Kategori" id="kategori" name="id_kategori">
                                 </select>
                             </div>
                             <div class="col-12">
                                 <label class="control-label">Nama Barang</label>
                                 <input class="form-control" type="text" id="nama_barang" name="nama_barang">
+                            </div>
+                            <div class="col-12">
+                                <label class="control-label">Satuan</label>
+                                <select class="form-control" data-placeholder="Pilih Satuan" name="satuan" id="satuan">
+                                </select>
                             </div>
                             <div class="col-12">
                                 <label class="control-label">Jumlah</label>
@@ -80,6 +84,7 @@
                                 <tr>
                                     <th>Kategori</th>
                                     <th>Nama Barang</th>
+                                    <th>Satuan</th>
                                     <th>Jumlah</th>
                                     <th>Harga Beli</th>
                                     <th>Harga Jual</th>
@@ -112,9 +117,10 @@
      *       Basic Table                   *
      ****************************************/
     // $('#zero_config').DataTable();
-
+    var arr_satuan = ['pcs','unit','box','lusin','pack','botol','kilo','rim','meter'];
+    var table;
     $(document).ready(function() {
-        var table = $('#zero_config').DataTable({
+        table = $('#zero_config').DataTable({
             processing: true,
             serverSide: false,
             ajax: "{{ route('barang.getbarang') }}",
@@ -124,6 +130,11 @@
                 }, {
                     data: 'nama_barang',
                     name: 'nama_barang'
+                }, {
+                    data: 'satuan',
+                    render: function(data){
+                        return data.toUpperCase()
+                    }
                 }, {
                     data: 'jumlah',
                     render: function(data) {
@@ -198,6 +209,14 @@
                     .nama_kategori + '</option>');
             });
         });
+        $('#satuan').empty();
+        $('#satuan').append('<option value="">-- Pilih Satuan --</option>');
+        arr_satuan.forEach(function(satuan){
+            let option = document.createElement('option');
+            option.value = satuan;
+            option.text = satuan.toUpperCase();
+            $('#satuan').append(option);
+        })
         $('#add_barang').modal('show');
     }
 
@@ -222,7 +241,16 @@
                     }
                 });
             });
-
+            $('#satuan').empty();
+            $('#satuan').append('<option value="">-- Pilih Satuan --</option>');
+            arr_satuan.forEach(function(satuan){
+                if(data.satuan==satuan){
+                    $('#satuan').append('<option value="' + satuan +'" selected>' +satuan.toUpperCase()+ '</option>');
+                }
+                else{
+                    $('#satuan').append('<option value="' + satuan +'">' +satuan.toUpperCase()+ '</option>');
+                }
+            })
             $('#nama_barang').val(data.nama_barang);
             $('#jumlah').val(data.jumlah);
             $('#harga_jual').val(data.harga_jual);
@@ -232,7 +260,7 @@
     }
 
     function exportData() {
-
+        console.log('export data');
         // Gunakan window.open agar PDF terbuka di tab baru
         window.open("{{ route('barang.export_pdf') }}", '_blank');
     }
