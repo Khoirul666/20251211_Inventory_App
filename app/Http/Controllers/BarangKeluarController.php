@@ -201,4 +201,8 @@ class BarangKeluarController extends Controller
         // return view('barang_keluar.export_pdf', compact('data'));
         // return response()->json(['data' => $data]);
     }
+
+    public function test(){
+        return "aaa";
+    }
 }
