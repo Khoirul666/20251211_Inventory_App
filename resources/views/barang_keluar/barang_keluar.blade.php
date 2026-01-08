@@ -65,8 +65,6 @@
                                     <th>No</th>
                                     <th>Customer</th>
                                     <th>Tanggal</th>
-                                    <th>Total Item</th>
-                                    <th>Nama Item</th>
                                     <th>Total Harga</th>
                                 </tr>
                             </thead>
@@ -127,19 +125,6 @@
                         // let totalJenis = row.barang_keluar.length;
 
                         return `${totalQty} Item`;
-                    }
-                    return '0';
-                }
-            },{ 
-                data: 'barangkeluar',
-                render:function(data,type,row){
-                    if (row.barangkeluar && Array.isArray(row.barangkeluar)) {
-
-                        // Ambil hanya properti nama_barang dari setiap object dalam array
-        let daftarNama = row.barangkeluar.map(item => item.nama_barang);
-        
-        // Gabungkan dengan koma dan spasi
-        return daftarNama.join(', ');
                     }
                     return '0';
                 }

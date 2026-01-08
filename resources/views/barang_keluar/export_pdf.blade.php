@@ -67,7 +67,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $row->customer->nama_customer }}</td>
-                <td>{{ $row->tgl_cetak }} Item</td>
+                <td>{{ $row->tgl_cetak }}</td>
                 <td>{{ $row->barangkeluar->sum('jumlah') }} Item</td>
                 <td>Rp {{ number_format($row->total_harga, 0, ',', '.') }}</td>
             </tr>
