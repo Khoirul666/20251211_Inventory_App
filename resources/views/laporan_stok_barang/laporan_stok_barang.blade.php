@@ -90,7 +90,7 @@
 
         $(document).ready(function() {
             // 1. Definisikan tanggal hari ini
-            let today = new Date().toISOString().split('T')[0];
+            let today = new Date().toLocaleDateString('en-CA');
 
             // 2. Isi nilai input secara default SEBELUM datatable init
             $('#tanggal_awal').val(today);

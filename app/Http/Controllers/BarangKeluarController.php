@@ -154,7 +154,7 @@ class BarangKeluarController extends Controller
                 $inv_penjualan = InvoicePenjualan::create([
                     'id_customer' => $id_cs,
                     'total_harga' => 0,
-                    'tgl_cetak' => now(),
+                    'tgl_cetak' => now()->timezone('Asia/Jakarta'),
                 ]);
                 // var_dump($cart, $id_cs, $inv_penjualan);
                 $count_total = 0;
