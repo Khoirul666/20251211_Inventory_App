@@ -65,6 +65,7 @@
                                     <th>No</th>
                                     <th>Customer</th>
                                     <th>Tanggal</th>
+                                    <th>Total Item</th>
                                     <th>Total Harga</th>
                                 </tr>
                             </thead>
