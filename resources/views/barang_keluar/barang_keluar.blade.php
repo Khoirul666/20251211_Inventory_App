@@ -66,6 +66,7 @@
                                     <th>Customer</th>
                                     <th>Tanggal</th>
                                     <th>Total Item</th>
+                                    <th>Nama Item</th>
                                     <th>Total Harga</th>
                                 </tr>
                             </thead>
@@ -129,7 +130,20 @@
                     }
                     return '0';
                 }
-            }, {
+            },{ 
+                data: 'barangkeluar',
+                render:function(data,type,row){
+                    if (row.barangkeluar && Array.isArray(row.barangkeluar)) {
+
+                        // Ambil hanya properti nama_barang dari setiap object dalam array
+        let daftarNama = row.barangkeluar.map(item => item.nama_barang);
+        
+        // Gabungkan dengan koma dan spasi
+        return daftarNama.join(', ');
+                    }
+                    return '0';
+                }
+            },{
                 data: 'total_harga',
                 render: function(data) {
                     return 'Rp ' + parseInt(data).toLocaleString('id-ID');
